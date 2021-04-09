@@ -35,6 +35,7 @@ public class UserController {
         User user = User.builder()
                 .id(1L)
                 .name("Tom")
+                .surname("Jones")
                 .email("tomJones@gmail.com")
                 .jobDetails(jobDetails)
                 .gender(Gender.MALE)
