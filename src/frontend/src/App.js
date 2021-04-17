@@ -1,4 +1,4 @@
-import {getAllUsers} from "./client";
+import {getAllEmployees} from "./client";
 import {useState, useEffect} from 'react'
 
 import {
@@ -68,35 +68,35 @@ const columns = [
 
 function App() {
 
-    const [users, setUsers] = useState([]);
+    const [employees, setEmployees] = useState([]);
     const [collapsed, setCollapsed] = useState(false);
     const [fetching, setFetching] = useState(true);
 
-    const fetchUsers = () => getAllUsers()
+    const fetchEmployees = () => getAllEmployees()
         .then(response => response.json())
         .then(data => {
             console.log(data)
-            setUsers(data)
+            setEmployees(data)
             setFetching(false)
         });
 
-    useEffect(() => fetchUsers(), []);
+    useEffect(() => fetchEmployees(), []);
 
-    const renderUsers = () => {
+    const renderEmployees = () => {
         if (fetching) {
             return <Spin/>
         }
-        if (users.length <= 0) {
+        if (employees.length <= 0) {
             return <Empty/>
         }
         return <Table
-            dataSource={users}
+            dataSource={employees}
             columns={columns}
-            rowKey={(user) => user.id}
+            rowKey={(employee) => employee.id}
             bordered
-            title={() => 'Users'}
+            title={() => 'Employees'}
             pagination={{pageSize: 10}}
-            scroll={{y: 240}}
+            scroll={{y: 840}}
         />;
     }
 
@@ -124,8 +124,8 @@ function App() {
                 </SubMenu>
                 <SubMenu key="sub3" icon={<TeamOutlined/>} title="Users">
                     <Menu.Item key="14" icon={<PieChartOutlined/>}>All users</Menu.Item>
-                    <Menu.Item key="15" icon={<PieChartOutlined/>}>Add user</Menu.Item>
-                    <Menu.Item key="16" icon={<PieChartOutlined/>}>Delete user</Menu.Item>
+                    <Menu.Item key="15" icon={<PieChartOutlined/>}>Add employee</Menu.Item>
+                    <Menu.Item key="16" icon={<PieChartOutlined/>}>Delete employee</Menu.Item>
                 </SubMenu>
                 <Menu.Item key="17" icon={<FileOutlined/>}>Files</Menu.Item>
             </Menu>
@@ -137,7 +137,7 @@ function App() {
                     <Breadcrumb.Item>All users</Breadcrumb.Item>
                 </Breadcrumb>
                 <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
-                    {renderUsers()}
+                    {renderEmployees()}
                 </div>
             </Content>
             <Footer style={{textAlign: 'center'}}>Quickhelper Backoffice</Footer>

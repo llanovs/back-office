@@ -9,6 +9,6 @@ const checkStatus = response => {
     return Promise.reject(error);
 }
 
-export const getAllUsers = () =>
-    fetch("api/v1/users")
+export const getAllEmployees = () =>
+    fetch("api/v1/employees")
         .then(checkStatus);
