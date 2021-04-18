@@ -14,10 +14,21 @@ export const getAllEmployees = () =>
         .then(checkStatus);
 
 
-export const addEmployee = () =>
-    fetch("api/v1/employees")
-        .then(checkStatus);
+export const addEmployee = employee =>
+    fetch("api/v1/employees", {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: "POST",
+        body: JSON.stringify(employee)
+    }).then(checkStatus);
 
-export const deleteEmployee = () =>
-    fetch("api/v1/employees/delete")
-        .then(checkStatus);
+
+export const deleteEmployee = employee =>
+    fetch("api/v1/employees/delete", {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: "POST",
+        body: JSON.stringify(employee)
+    }).then(checkStatus);

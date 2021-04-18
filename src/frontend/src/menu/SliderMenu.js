@@ -2,9 +2,9 @@ import React, {Component, useState} from "react";
 import {Layout, Menu} from "antd";
 
 import {
-    ContactsOutlined,
+    ContactsOutlined, ExportOutlined,
     FileAddOutlined,
-    IdcardOutlined,
+    IdcardOutlined, ImportOutlined,
     ProjectOutlined,
     ScheduleOutlined,
     SmileOutlined,
@@ -26,6 +26,7 @@ const RenderMenu = () => {
     return <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
         <div className="logo"/>
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
+            <Menu.Item key="18" icon={<ImportOutlined/>} title="Login">Login</Menu.Item>
             <SubMenu key="sub1" icon={<UserOutlined/>} title="Employee">
                 <Menu.Item key="1" icon={<ContactsOutlined/>}>Personal Information</Menu.Item>
                 <Menu.Item key="2" icon={<IdcardOutlined/>}>Job details</Menu.Item>
@@ -44,11 +45,14 @@ const RenderMenu = () => {
                 <Menu.Item key="13" icon={<ToolOutlined/>}>Team preferences</Menu.Item>
             </SubMenu>
             <SubMenu key="sub3" icon={<TeamOutlined/>} title="Employees">
-                <Menu.Item key="14" icon={<TeamOutlined/>}>All employees</Menu.Item>
-                <Menu.Item key="15" icon={<UserAddOutlined/>}>Add employee</Menu.Item>
+                <Menu.Item key="14" icon={<TeamOutlined/>}>
+                    <a href="./../App.js" >All employees</a></Menu.Item>
+                <Menu.Item key="15" icon={<UserAddOutlined/>}>
+                    <a href="./../App.js" >Add employee</a></Menu.Item>
                 <Menu.Item key="16" icon={<UserDeleteOutlined/>}>Delete employee</Menu.Item>
             </SubMenu>
             <Menu.Item key="17" icon={<FileAddOutlined/>}>Files</Menu.Item>
+            <Menu.Item key="19" icon={<ExportOutlined/>} title="Logout">Logout</Menu.Item>
         </Menu>
     </Sider>;
 };

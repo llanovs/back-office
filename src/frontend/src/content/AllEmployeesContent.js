@@ -7,11 +7,37 @@ import {
     Table,
     Spin,
     Empty,
+    Badge,
+    Tag,
+    Avatar
 } from "antd";
+
+import {UserOutlined} from "@ant-design/icons";
 
 const {Content} = Layout;
 
+const TheAvatar = ({name}) => {
+    let emptyName = name.trim();
+    if (emptyName.length === 0)
+        return <Avatar icon={<UserOutlined/>}/>
+
+    const split = emptyName.split(" ");
+    if (split.length === 1) {
+        return <Avatar>{name.charAt(0)}</Avatar>
+    }
+    return <Avatar>
+        {`${name.charAt(0)}${name.charAt(name.length - 1)}`}
+    </Avatar>
+}
+
 const columns = [
+    {
+        title: 'Avatar',
+        dataIndex: 'avatar',
+        key: 'avatar',
+        render: (text, employee) => <TheAvatar
+            name={employee.name}/>
+    },
     {
         title: 'id',
         dataIndex: 'id',
@@ -70,21 +96,25 @@ export const RenderAllEmployees = () => {
         if (employees.length <= 0) {
             return <Empty/>;
         }
-        return <Table
-            dataSource={employees}
-            columns={columns}
-            rowKey={(employee) => employee.id}
-            bordered
-            title={() => 'Employees'}
-            pagination={{pageSize: 10}}
-            scroll={{y: 840}}
-        />;
+        return <>
+            <Tag>Number of employees</Tag>
+            <Badge count={employees.length} className="site-badge-count-4"/>
+            <Table
+                dataSource={employees}
+                columns={columns}
+                rowKey={(employee) => employee.id}
+                bordered
+                title={() => 'Employees'}
+                pagination={{pageSize: 10}}
+                scroll={{y: 840}}
+            />
+        </>;
     }
 
     return renderEmployees();
 };
 
-export class AllEmployees extends Component {
+export class AllEmployeesContent extends Component {
     render() {
         return <Content style={{margin: '0 16px'}}>
             <Breadcrumb style={{margin: '16px 0'}}>
