@@ -3,9 +3,7 @@ package com.quickhelper.backoffice.controllers;
 import com.quickhelper.backoffice.services.EmployeeService;
 import com.quickhelper.backoffice.users.Employee;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +17,16 @@ public class EmployeeController {
     @GetMapping
     public List<Employee> getAllEmployees(){
         return employeeService.getAllEmployees();
+    }
+
+    @PostMapping
+    public void addEmployee(@RequestBody Employee employee){
+        employeeService.addEmployee(employee);
+    }
+
+
+    @PostMapping(path = "delete")
+    public void deleteEmployee(@RequestBody Employee employee){
+        employeeService.deleteEmployee(employee);
     }
 }

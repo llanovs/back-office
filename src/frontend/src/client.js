@@ -12,3 +12,12 @@ const checkStatus = response => {
 export const getAllEmployees = () =>
     fetch("api/v1/employees")
         .then(checkStatus);
+
+
+export const addEmployee = () =>
+    fetch("api/v1/employees")
+        .then(checkStatus);
+
+export const deleteEmployee = () =>
+    fetch("api/v1/employees/delete")
+        .then(checkStatus);
