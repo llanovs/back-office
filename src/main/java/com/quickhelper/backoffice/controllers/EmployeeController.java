@@ -19,14 +19,23 @@ public class EmployeeController {
         return employeeService.getAllEmployees();
     }
 
-    @PostMapping
+    @GetMapping("/{employeeId}")
+    public Employee getEmployeeById(@PathVariable Long employeeId){
+        return employeeService.getEmployeeById(employeeId).orElse(null);
+    }
+
+    @PostMapping("/add")
     public void addEmployee(@RequestBody Employee employee){
         employeeService.addEmployee(employee);
     }
 
+    @PostMapping(path = "/update")
+    public void updateEmployee(@RequestBody Employee employee){
+        employeeService.updateEmployee(employee);
+    }
 
-    @PostMapping(path = "delete")
-    public void deleteEmployee(@RequestBody Employee employee){
-        employeeService.deleteEmployee(employee);
+    @DeleteMapping("/delete/{employeeId}")
+    public void deleteEmployee(@PathVariable Long employeeId){
+        employeeService.deleteEmployeeById(employeeId);
     }
 }
