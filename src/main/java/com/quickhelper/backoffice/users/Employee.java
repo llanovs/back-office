@@ -5,6 +5,9 @@ import lombok.*;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -28,16 +31,23 @@ public class Employee {
             strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @NotBlank
+    @Column(nullable = false)
     private String name;
 
+    @NotBlank
+    @Column(nullable = false)
     private String surname;
 
-    @Nullable
+    @Email
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Nullable
     private String phone;
 
+    @NotNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Gender gender;
 

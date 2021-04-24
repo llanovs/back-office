@@ -7,6 +7,7 @@ import com.quickhelper.backoffice.users.Employee;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +36,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/add")
-    public void addEmployee(@RequestBody Employee employee) {
+    public void addEmployee(@Valid @RequestBody Employee employee) {
         if (employeeService.getEmployeeByEmail(employee.getEmail()).isPresent()) {
             throw new BadRequestException(MSG_EMAIL_TAKEN);
         }
@@ -43,7 +44,7 @@ public class EmployeeController {
     }
 
     @PostMapping(path = "/update")
-    public void updateEmployee(@RequestBody Employee employee) {
+    public void updateEmployee(@Valid @RequestBody Employee employee) {
         if (!employeeService.getEmployeeById(employee.getId()).isPresent()) {
             throw new BadRequestException(MSG_EMPLOYEE_DOES_NOT_EXIST);
         }
