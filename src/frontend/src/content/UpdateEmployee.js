@@ -11,29 +11,29 @@ import {
 
 import {LoadingOutlined} from "@ant-design/icons";
 import {successNotification, errorNotification} from "./Notification";
-import {addEmployee} from "../client";
 import {useState} from "react";
+import {updateEmployee} from "../client";
 
 const {Option} = Select;
 const antIcon = <LoadingOutlined style={{fontSize: 24}} spin/>;
 
-export function AddEmployee({showDrawer, setShowDrawer}) {
+export function UpdateEmployee({showDrawer, setShowDrawer}) {
     const onCLose = () => setShowDrawer(false);
     const [submitting, setSubmitting] = useState(false);
 
     const onFinish = employee => {
         setSubmitting(true);
         console.log(JSON.stringify(employee, null, 2));
-        addEmployee(employee)
+        updateEmployee(employee)
             .then(() => {
-                console.log("Employee added")
+                console.log("Employee updated")
                 onCLose();
-                successNotification("Employee was added",
-                    `${employee.name} was added to a system`);
+                successNotification("Employee was updated",
+                    `${employee.name} was updated in a system`);
             })
             .catch(err => {
                 errorNotification(`Error: ${err}`,
-                    `${employee.name} wasn't added to a system`);
+                    `${employee.name} wasn't updated in a system`);
                 console.log(err);
             })
             .finally(() => setSubmitting(false));
@@ -44,7 +44,7 @@ export function AddEmployee({showDrawer, setShowDrawer}) {
     };
 
     return <Drawer
-        title="Create new employee"
+        title="Edit employee's info"
         width={720}
         onClose={onCLose}
         visible={showDrawer}

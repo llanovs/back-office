@@ -1,7 +1,17 @@
-import React, {Component, useEffect, useState} from "react";
+import React, {
+    Component,
+    useEffect,
+    useState
+} from "react";
+
 import {getAllEmployees} from "../client";
+import {deleteEmployee} from "../client";
+import {updateEmployee} from "../client";
 
 import {
+    Space,
+    Radio,
+    Popconfirm,
     Layout,
     Breadcrumb,
     Table,
@@ -12,9 +22,16 @@ import {
     Avatar
 } from "antd";
 
-import {UserOutlined} from "@ant-design/icons";
+import {
+    UserOutlined
+} from "@ant-design/icons";
+
+import {successNotification} from "./Notification";
 
 const {Content} = Layout;
+
+const deleteMessage = (name) => `Are you sure to delete ${name}?`;
+const editMessage = (name) => `Are you sure to update ${name}?`;
 
 const TheAvatar = ({name}) => {
     let emptyName = name.trim();
@@ -30,7 +47,25 @@ const TheAvatar = ({name}) => {
     </Avatar>
 }
 
-const columns = [
+const removeEmployee = (employeeId, callback) => {
+    deleteEmployee(employeeId)
+        .then(() => {
+            successNotification(`Employee with id = ${employeeId} was deleted`,
+                `Employee with id = ${employeeId} was deleted`);
+            callback();
+        });
+}
+
+const updateEmployeeInfo = (employee, callback) => {
+    updateEmployee(employee)
+        .then(() => {
+            successNotification(`Employee  ${employee.name} info was updated`,
+                `Employee info ${employee.name} was updated`);
+            callback();
+        });
+}
+
+const columns = fetchEmployees => [
     {
         title: 'Avatar',
         dataIndex: 'avatar',
@@ -72,6 +107,30 @@ const columns = [
         title: 'Phone',
         dataIndex: 'phone',
         key: 'phone',
+    },
+    {
+        title: 'Actions',
+        dataIndex: 'actions',
+        render: (text, employee) => <Space size="large">
+            <Radio.Group value={"default"}>
+                    <Popconfirm
+                        placement="topRight"
+                        title={(editMessage(employee.name))}
+                        onConfirm={() => updateEmployeeInfo(employee, fetchEmployees)}
+                        okText="Yes"
+                        cancelText="No">
+                        <Radio.Button value="default">Edit</Radio.Button>
+                    </Popconfirm>>
+                    <Popconfirm
+                        placement="topRight"
+                        title={(deleteMessage(employee.name))}
+                        onConfirm={() => removeEmployee(employee.id, fetchEmployees)}
+                        okText="Yes"
+                        cancelText="No">
+                        <Radio.Button value="default">Delete</Radio.Button>
+                    </Popconfirm>>
+            </Radio.Group>
+        </Space>
     }
 ];
 
@@ -101,7 +160,7 @@ export const RenderAllEmployees = () => {
             <Badge count={employees.length} className="site-badge-count-4"/>
             <Table
                 dataSource={employees}
-                columns={columns}
+                columns={columns(fetchEmployees)}
                 rowKey={(employee) => employee.id}
                 bordered
                 title={() => 'Employees'}
