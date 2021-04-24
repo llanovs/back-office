@@ -26,12 +26,14 @@ import {
     UserOutlined
 } from "@ant-design/icons";
 
-import {successNotification} from "./Notification";
+import {errorNotification, successNotification} from "./Notification";
 
 const {Content} = Layout;
 
-const deleteMessage = (name) => `Are you sure to delete ${name}?`;
-const editMessage = (name) => `Are you sure to update ${name}?`;
+const deleteMessage = name => `Are you sure to delete ${name}?`;
+const editMessage = name => `Are you sure to update ${name}?`;
+const successDeleteMessage = employeeId => `Employee with id = ${employeeId} was deleted`;
+const successUpdateMessage = name => `Employee ${name} info was updated`;
 
 const TheAvatar = ({name}) => {
     let emptyName = name.trim();
@@ -50,18 +52,34 @@ const TheAvatar = ({name}) => {
 const removeEmployee = (employeeId, callback) => {
     deleteEmployee(employeeId)
         .then(() => {
-            successNotification(`Employee with id = ${employeeId} was deleted`,
-                `Employee with id = ${employeeId} was deleted`);
+            successNotification(successDeleteMessage(employeeId),
+                successDeleteMessage(employeeId));
             callback();
+        })
+        .catch(err => {
+            err.response.json().then(
+                res => {
+                    console.log(res);
+                    errorNotification(`There was an issue:  
+                        ${res.message} status code: ${res.status}`);
+                })
         });
 }
 
 const updateEmployeeInfo = (employee, callback) => {
     updateEmployee(employee)
         .then(() => {
-            successNotification(`Employee  ${employee.name} info was updated`,
-                `Employee info ${employee.name} was updated`);
+            successNotification(successUpdateMessage(employee.name) ,
+                successUpdateMessage(employee.name));
             callback();
+        })
+        .catch(err => {
+            err.response.json().then(
+                res => {
+                    console.log(res);
+                    errorNotification(`There was an issue:  
+                        ${res.message} status code: ${res.status}`);
+                })
         });
 }
 
@@ -113,22 +131,22 @@ const columns = fetchEmployees => [
         dataIndex: 'actions',
         render: (text, employee) => <Space size="large">
             <Radio.Group value={"default"}>
-                    <Popconfirm
-                        placement="topRight"
-                        title={(editMessage(employee.name))}
-                        onConfirm={() => updateEmployeeInfo(employee, fetchEmployees)}
-                        okText="Yes"
-                        cancelText="No">
-                        <Radio.Button value="default">Edit</Radio.Button>
-                    </Popconfirm>>
-                    <Popconfirm
-                        placement="topRight"
-                        title={(deleteMessage(employee.name))}
-                        onConfirm={() => removeEmployee(employee.id, fetchEmployees)}
-                        okText="Yes"
-                        cancelText="No">
-                        <Radio.Button value="default">Delete</Radio.Button>
-                    </Popconfirm>>
+                <Popconfirm
+                    placement="topRight"
+                    title={(editMessage(employee.name))}
+                    onConfirm={() => updateEmployeeInfo(employee, fetchEmployees)}
+                    okText="Yes"
+                    cancelText="No">
+                    <Radio.Button value="default">Edit</Radio.Button>
+                </Popconfirm>>
+                <Popconfirm
+                    placement="topRight"
+                    title={(deleteMessage(employee.name))}
+                    onConfirm={() => removeEmployee(employee.id, fetchEmployees)}
+                    okText="Yes"
+                    cancelText="No">
+                    <Radio.Button value="default">Delete</Radio.Button>
+                </Popconfirm>>
             </Radio.Group>
         </Space>
     }
@@ -144,7 +162,18 @@ export const RenderAllEmployees = () => {
             console.log(data)
             setEmployees(data)
             setFetching(false)
-        });
+        })
+        .catch(err => {
+            console.log(err.response);
+            err.response.json().then(
+                res => {
+                    console.log(res);
+                    errorNotification(`There was an issue:  
+                        ${res.message} status code: ${res.status}`);
+                }
+            );
+        })
+        .finally(() => setFetching(false));
 
     useEffect(() => fetchEmployees(), []);
 
