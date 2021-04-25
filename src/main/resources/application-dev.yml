@@ -6,7 +6,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://aapbxljtj83by7.cj477qoaxlxp.eu-central-1.rds.amazonaws.com:5432/quickhelper
+    url: jdbc:postgresql://aan0kzm1dzwvdg.cj477qoaxlxp.eu-central-1.rds.amazonaws.com:5432/quickhelper
     username: admin10
     password: admin10Test
   jpa:

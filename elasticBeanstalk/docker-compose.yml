@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   backend:
-    image: "gloria101987/backoffice:3"
+    image: "gloria101987/backoffice:v2"
     ports:
       - "80:8083"
     restart: "always"
