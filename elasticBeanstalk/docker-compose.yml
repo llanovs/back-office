@@ -1,7 +1,9 @@
 version: "3.8"
 services:
   backend:
-    image: "gloria101987/backoffice:latest"
+    image: "gloria101987/backoffice:3"
     ports:
       - "80:8083"
     restart: "always"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
